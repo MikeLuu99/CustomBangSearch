@@ -1,61 +1,81 @@
-import React, {
-  useEffect, useRef, useState, useCallback,
-} from 'react';
-
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   Box,
-  Button, HStack, Menu, MenuButton, MenuItem, MenuList, TabPanel, useToast, VStack, Text,
+  Button,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  TabPanel,
+  useToast,
+  VStack,
+  Text,
+  IconButton,
+  Flex,
+  Tooltip,
 } from '@chakra-ui/react';
 import {
-  CheckIcon, PlusSquareIcon, RepeatIcon, DownloadIcon, ChevronDownIcon,
+  CheckIcon,
+  AddIcon,
+  RepeatIcon,
+  DownloadIcon,
+  ChevronDownIcon,
+  ArrowUpIcon
 } from '@chakra-ui/icons';
-
 import { nanoid } from 'nanoid';
-
 import {
-  ReactfulBangInfoContainer, reactfulBangInfoToStored, storedBangInfoToReactful, ReactfulBangInfo,
+  ReactfulBangInfoContainer,
+  reactfulBangInfoToStored,
+  storedBangInfoToReactful,
+  ReactfulBangInfo,
 } from '../reactful';
 import BangInfo from './BangInfo';
 import {
-  SettingsOptions, StoredBangInfo, BangsExport, currentSettingsVersion,
+  SettingsOptions,
+  StoredBangInfo,
+  BangsExport,
+  currentSettingsVersion,
 } from '../../lib/settings';
 import defaultSettings from '../../lib/settings.default.json';
-import RenderCounter from './RenderCounter';
 
 const defaultReactfulBangs = storedBangInfoToReactful(defaultSettings.bangs);
 
 type BangTabPanelPropTypes = {
-  options: Readonly<SettingsOptions>
-  bangInfos: Readonly<ReactfulBangInfoContainer>
-  setBangInfos: React.Dispatch<React.SetStateAction<ReactfulBangInfoContainer>>
-  bangChangesToSave: boolean,
-  updateSettings: (newOptions?: SettingsOptions, newBangInfos?: StoredBangInfo[]) => Promise<void>
+  options: Readonly<SettingsOptions>;
+  bangInfos: Readonly<ReactfulBangInfoContainer>;
+  setBangInfos: React.Dispatch<React.SetStateAction<ReactfulBangInfoContainer>>;
+  bangChangesToSave: boolean;
+  updateSettings: (newOptions?: SettingsOptions, newBangInfos?: StoredBangInfo[]) => Promise<void>;
 };
 
 export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactElement {
   const [bangInfoRows, setBangInfoRows] = useState<React.ReactElement[]>();
-
   const fileInputRef = useRef<HTMLInputElement>(null);
   const toast = useToast();
-
   const {
-    options, bangInfos, setBangInfos, bangChangesToSave, updateSettings,
+    options,
+    bangInfos,
+    setBangInfos,
+    bangChangesToSave,
+    updateSettings,
   } = props;
 
-  // --- Top Buttons ---
-
   const saveBangInfo = () => {
-    // Don't need to clone beacuse it's only read.
     updateSettings(undefined, reactfulBangInfoToStored(bangInfos));
   };
 
   const newBangInfo = () => {
     const newUrls = new Map();
     newUrls.set(nanoid(21), 'https://example.com/?q=%s');
-    setBangInfos((oldBangInfos) => new Map(oldBangInfos).set(nanoid(21), { bang: 'e', urls: newUrls }));
+    const newBangId = nanoid(21);
+    setBangInfos((oldBangInfos) => {
+      const newBangInfos = new Map();
+      newBangInfos.set(newBangId, { bang: 'e', urls: newUrls });
+      return new Map([...newBangInfos, ...oldBangInfos]);
+    });
     toast({
-      title: 'New bang added to bottom of list',
-      description: '',
+      title: 'New shortcut added',
       status: 'info',
       duration: 1500,
       isClosable: true,
@@ -69,16 +89,11 @@ export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactE
     }
   };
 
-  const fileUpload = async (e: React.ChangeEvent<HTMLInputElement>):Promise<void> => {
-    if (e.target.files === null) {
-      return;
-    }
+  const fileUpload = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+    if (e.target.files === null) return;
 
     const file: File = e.target.files[0];
-
     if (fileInputRef.current !== null) {
-      // Reset the selected file so that if the user imports the same file again,
-      // the change event will still fire.
       fileInputRef.current.value = '';
     }
 
@@ -87,10 +102,10 @@ export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactE
       imported = JSON.parse(await file.text());
     } catch (_e) {
       toast({
-        title: 'Failed to import bangs',
-        description: 'Could not parse invalid JSON.',
+        title: 'Import failed',
+        description: 'Invalid JSON format',
         status: 'error',
-        duration: 10000,
+        duration: 5000,
         isClosable: true,
         position: 'top',
       });
@@ -99,10 +114,10 @@ export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactE
 
     if (imported.version !== currentSettingsVersion) {
       toast({
-        title: 'Failed to import bangs',
-        description: `Found version: ${imported.version}, expecting version: ${currentSettingsVersion}.`,
+        title: 'Import failed',
+        description: `Version mismatch: ${imported.version} vs ${currentSettingsVersion}`,
         status: 'error',
-        duration: 10000,
+        duration: 5000,
         isClosable: true,
         position: 'top',
       });
@@ -114,10 +129,10 @@ export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactE
       converted = storedBangInfoToReactful(imported.bangs);
     } catch (_e) {
       toast({
-        title: 'Failed to import bangs',
-        description: 'Could not convert JSON to bangs type.',
+        title: 'Import failed',
+        description: 'Could not convert JSON to bangs',
         status: 'error',
-        duration: 10000,
+        duration: 5000,
         isClosable: true,
         position: 'top',
       });
@@ -128,8 +143,8 @@ export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactE
     setBangInfos(converted);
 
     toast({
-      title: 'Successfully imported bangs',
-      description: `Loaded from file: ${file.name}, don't forget to save!`,
+      title: 'Import successful',
+      description: `Loaded from ${file.name}. Don't forget to save!`,
       status: 'success',
       duration: 2500,
       isClosable: true,
@@ -148,11 +163,10 @@ export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactE
       bangs: converted,
     };
     const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(exported))}`;
-    // React probably doesn't like this 😬
     const a = document.createElement('a');
     a.setAttribute('href', dataStr);
     a.setAttribute('download', 'custombangs.json');
-    a.click(); // Blocks until user performs action.
+    a.click();
     a.remove();
   };
 
@@ -160,12 +174,9 @@ export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactE
     setBangInfos(defaultReactfulBangs);
   };
 
-  // --- Buttons on individual bangs ---
-
   const removeBangInfo = useCallback((id: string) => {
     setBangInfos((oldBangInfos) => {
       const shallowCopy = new Map(oldBangInfos);
-      // shallowCopy is a new map, removing from this wont affect the key/value in the state var.
       shallowCopy.delete(id);
       return shallowCopy;
     });
@@ -202,41 +213,62 @@ export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactE
 
   useEffect(() => {
     generateRows();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bangInfos, options]);
 
   return (
     <TabPanel>
-      <HStack paddingBottom="2em">
-        <Button
-          onClick={() => { saveBangInfo(); }}
-          leftIcon={<CheckIcon />}
-          colorScheme={bangChangesToSave ? 'whatsapp' : 'gray'}
-          variant="solid"
-        >
-          Save
-        </Button>
-        <Button onClick={() => { newBangInfo(); }} leftIcon={<PlusSquareIcon />} variant="solid">Add Bang</Button>
-
-        {/* Box because of this - https://github.com/chakra-ui/chakra-ui/issues/3440 */}
-        <Box>
+      <Flex justifyContent="space-between" mb={6}>
+        <HStack spacing={2}>
+          <Tooltip label="Save changes">
+            <IconButton
+              aria-label="Save"
+              icon={<CheckIcon />}
+              onClick={saveBangInfo}
+              colorScheme={bangChangesToSave ? 'green' : 'gray'}
+            />
+          </Tooltip>
+          <Tooltip label="Add new shortcut">
+            <IconButton
+              aria-label="Add Shortcut"
+              icon={<AddIcon />}
+              onClick={newBangInfo}
+            />
+          </Tooltip>
           <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              Import
-            </MenuButton>
+            <Tooltip label="Import bangs">
+              <MenuButton as={IconButton} aria-label="Import" icon={<ArrowUpIcon />} />
+            </Tooltip>
             <MenuList>
-              <MenuItem onClick={() => { importBangs(); }}><Text fontSize="lg">Import bangs from file</Text></MenuItem>
-              <MenuItem onClick={() => { importDdgBangs(); }}><Text fontSize="lg">Import DuckDuckGo bangs</Text></MenuItem>
+              <MenuItem onClick={importBangs}>Import from file</MenuItem>
+              <MenuItem onClick={importDdgBangs}>Import DuckDuckGo bangs</MenuItem>
             </MenuList>
           </Menu>
-        </Box>
-        <input ref={fileInputRef} type="file" accept="application/json" style={{ display: 'none' }} onChange={fileUpload} />
-
-        <Button onClick={() => { exportBangs(); }} leftIcon={<DownloadIcon />} variant="solid">Export</Button>
-        <Button onClick={() => { resetBangsToDefault(); }} leftIcon={<RepeatIcon />} variant="solid">Reset To Default</Button>
-        <RenderCounter />
-      </HStack>
-      <VStack align="left">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/json"
+            style={{ display: 'none' }}
+            onChange={fileUpload}
+          />
+        </HStack>
+        <HStack spacing={2}>
+          <Tooltip label="Export bangs">
+            <IconButton
+              aria-label="Export"
+              icon={<DownloadIcon />}
+              onClick={exportBangs}
+            />
+          </Tooltip>
+          <Tooltip label="Reset to default">
+            <IconButton
+              aria-label="Reset To Default"
+              icon={<RepeatIcon />}
+              onClick={resetBangsToDefault}
+            />
+          </Tooltip>
+        </HStack>
+      </Flex>
+      <VStack align="stretch" spacing={4}>
         {bangInfoRows}
       </VStack>
     </TabPanel>

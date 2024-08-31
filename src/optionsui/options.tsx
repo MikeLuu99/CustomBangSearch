@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client';
 
 import {
   Heading, ChakraProvider, Tabs, TabList, TabPanels, Tab, HStack, Box, useMediaQuery,
-  useToast, Text,
+  useToast, Text, VStack,
 } from '@chakra-ui/react';
 
 import browser from 'webextension-polyfill';
@@ -20,7 +20,6 @@ import { Settings, SettingsOptions, StoredBangInfo } from '../lib/settings';
 import * as storage from '../lib/storage';
 import MiscButtons from '../lib/components/MiscButtons';
 import { currentBrowser } from '../lib/esbuilddefinitions';
-import RenderCounter from './components/RenderCounter';
 import PermissionsRequester from '../lib/components/PermissionsRequester';
 
 const BROWSER_QUOTA_BYTES_PER_ITEM = currentBrowser === 'chrome' ? browser.storage.sync.QUOTA_BYTES_PER_ITEM : 8192;
@@ -159,7 +158,7 @@ function App(): React.ReactElement {
       }
     };
     update();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let content: any;
@@ -171,9 +170,7 @@ function App(): React.ReactElement {
       <Tabs>
         <TabList>
           {/* Margin in the Tab allows the TabList horiz line to still fit the whole width */}
-          <Tab marginLeft="2rem">Bangs</Tab>
-          <Tab>Options</Tab>
-          <Tab>About</Tab>
+          <Tab marginLeft="2rem">Shortcuts</Tab>
         </TabList>
         <TabPanels paddingLeft="2rem">
           <BangTabPanel
@@ -183,12 +180,6 @@ function App(): React.ReactElement {
             bangChangesToSave={bangChangesToSave}
             updateSettings={updateSettings}
           />
-          <OptionsTabPanel
-            options={options}
-            setOptions={setOptions}
-            updateSettings={updateSettings}
-          />
-          <AboutTabPanel />
         </TabPanels>
       </Tabs>
     );
@@ -198,18 +189,26 @@ function App(): React.ReactElement {
   const widthPercent = windowIsAtLeast2200 ? '40%' : windowIsAtLeast1600 ? '60%' : windowIsAtLeast1200 ? '80%' : '100%';
 
   return (
-    <Box width={widthPercent} margin="auto">
-      <HStack justifyContent="space-between">
-        <Heading padding="0.5em 2rem">Custom Bang Search</Heading>
-        <PermissionsRequester closeWindow={false} />
-        <RenderCounter />
-        <MiscButtons />
-      </HStack>
-      <Text paddingLeft="2.5rem" paddingBottom="0.5rem" fontSize="1.25em">
-        {`Storing ${storedSize}/${BROWSER_QUOTA_BYTES_PER_ITEM} bytes (${(storedSize / (BROWSER_QUOTA_BYTES_PER_ITEM / 100)).toFixed(1)}%)`}
-      </Text>
-      {content}
-    </Box>
+    <VStack
+      width={widthPercent}
+      margin="auto"
+      minHeight="100vh"
+      justifyContent="center"
+      alignItems="center"
+      spacing={4}
+    >
+      <VStack width="100%" spacing={4}>
+        <HStack justifyContent="space-between" width="100%">
+          <PermissionsRequester closeWindow={false} />
+          <MiscButtons />
+        </HStack>
+        <Heading padding="0.5em 2rem">Search Shortcuts</Heading>
+        <Text fontSize="1.25em">
+          {`Storing ${storedSize}/${BROWSER_QUOTA_BYTES_PER_ITEM} bytes (${(storedSize / (BROWSER_QUOTA_BYTES_PER_ITEM / 100)).toFixed(1)}%)`}
+        </Text>
+        {content}
+      </VStack>
+    </VStack>
   );
 }
 

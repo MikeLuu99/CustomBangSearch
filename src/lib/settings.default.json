@@ -9,32 +9,13 @@
     {
       "bang": "a",
       "urls": [
-        "https://amazon.co.uk/s?k=%s"
+        "https://amazon.co.us/s?k=%s"
       ]
     },
     {
       "bang": "e",
       "urls": [
-        "https://www.ebay.co.uk/sch/i.html?_nkw=%s"
-      ]
-    },
-    {
-      "bang": "ea",
-      "urls": [
-        "https://amazon.co.uk/s?k=%s",
-        "https://www.ebay.co.uk/sch/i.html?_nkw=%s"
-      ]
-    },
-    {
-      "bang": "et",
-      "urls": [
-        "https://www.etsy.com/uk/search?q=%s"
-      ]
-    },
-    {
-      "bang": "t",
-      "urls": [
-        "https://www.twitch.tv/search?term=%s"
+        "https://www.ebay.co.us/sch/i.html?_nkw=%s"
       ]
     },
     {
@@ -46,7 +27,7 @@
     {
       "bang": "av",
       "urls": [
-        "https://amazon.co.uk/s?k=%s&i=instant-video"
+        "https://amazon.co.us/s?k=%s&i=instant-video"
       ]
     },
     {
@@ -59,24 +40,6 @@
       "bang": "g",
       "urls": [
         "https://www.google.com/search?q=%s"
-      ]
-    },
-    {
-      "bang": "b",
-      "urls": [
-        "https://www.bing.com/search?q=%s"
-      ]
-    },
-    {
-      "bang": "d",
-      "urls": [
-        "https://duckduckgo.com/?q=%s"
-      ]
-    },
-    {
-      "bang": "q",
-      "urls": [
-        "https://www.qwant.com/?q=%s"
       ]
     },
     {
@@ -95,12 +58,6 @@
       "bang": "git",
       "urls": [
         "https://github.com/search?q=%s"
-      ]
-    },
-    {
-      "bang": "mdn",
-      "urls": [
-        "https://developer.mozilla.org/en-US/search?q=%s"
       ]
     },
     {
@@ -125,6 +82,12 @@
       "bang": "w",
       "urls": [
         "https://www.wolframalpha.com/input/?i=%s"
+      ]
+    },
+    {
+      "bang": "ptlx",
+      "urls": [
+        "https://www.perplexity.ai/search?s=o&q=%s"
       ]
     }
   ]

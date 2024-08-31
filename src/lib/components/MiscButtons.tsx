@@ -10,7 +10,7 @@ export default function MiscButtons() {
 
   return (
     <HStack padding="0.5em 2rem">
-      <Button variant="outline" onClick={() => { window.open('https://github.com/psidex/CustomBangSearch', '_blank')?.focus(); }}>
+      <Button variant="outline" onClick={() => { window.open('https://github.com/MikeLuu99/CustomBangSearch', '_blank')?.focus(); }}>
         <GitHubIcon boxSize={6} />
       </Button>
       <Button variant="outline" onClick={toggleColorMode}>
