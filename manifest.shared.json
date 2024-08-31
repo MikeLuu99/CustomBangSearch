@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Custom Bang Search",
+  "name": "Search Shortcuts",
   "version": "0.10.6",
-  "description": "Use custom DuckDuckGo-like bangs directly from the address bar",
+  "description": "Custom DuckDuckGo bangs/shortcuts using the search bar",
   "icons": {
     "96": "images/icons/icon_96.png",
     "128": "images/icons/icon_128.png"
@@ -34,7 +34,7 @@
       "96": "images/icons/icon_96.png",
       "128": "images/icons/icon_128.png"
     },
-    "default_title": "Custom Bang Search",
+    "default_title": "Search Shortcuts",
     "default_popup": "src/popup/popup.html"
   }
 }
