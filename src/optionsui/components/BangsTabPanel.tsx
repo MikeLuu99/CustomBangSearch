@@ -14,6 +14,9 @@ import {
   IconButton,
   Flex,
   Tooltip,
+  Input,
+  InputGroup,
+  InputLeftElement,
 } from '@chakra-ui/react';
 import {
   CheckIcon,
@@ -21,7 +24,8 @@ import {
   RepeatIcon,
   DownloadIcon,
   ChevronDownIcon,
-  ArrowUpIcon
+  ArrowUpIcon,
+  SearchIcon,
 } from '@chakra-ui/icons';
 import { nanoid } from 'nanoid';
 import {
@@ -60,6 +64,7 @@ export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactE
     bangChangesToSave,
     updateSettings,
   } = props;
+  const [searchTerm, setSearchTerm] = useState('');
 
   const saveBangInfo = () => {
     updateSettings(undefined, reactfulBangInfoToStored(bangInfos));
@@ -182,6 +187,10 @@ export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactE
     });
   }, [setBangInfos]);
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
   const generateRows = () => {
     const rows = [];
     const isLonely = bangInfos.size === 1;
@@ -197,6 +206,16 @@ export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactE
     }
 
     for (const [id, rowInfo] of sortedBangInfos) {
+      if (searchTerm) {
+        const lowerSearchTerm = searchTerm.toLowerCase();
+        const bangMatch = rowInfo.bang.toLowerCase().includes(lowerSearchTerm);
+        const urlMatch = Array.from(rowInfo.urls.values()).some(url => 
+          url.toLowerCase().includes(lowerSearchTerm)
+        );
+        if (!bangMatch && !urlMatch) {
+          continue;
+        }
+      }
       rows.push(
         <BangInfo
           key={id}
@@ -213,7 +232,7 @@ export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactE
 
   useEffect(() => {
     generateRows();
-  }, [bangInfos, options]);
+  }, [bangInfos, options, searchTerm]);
 
   return (
     <TabPanel>
@@ -268,6 +287,16 @@ export default function BangTabPanel(props: BangTabPanelPropTypes): React.ReactE
           </Tooltip>
         </HStack>
       </Flex>
+      <InputGroup mb={4}>
+        <InputLeftElement pointerEvents="none">
+          <SearchIcon color="gray.300" />
+        </InputLeftElement>
+        <Input
+          placeholder="Search bangs..."
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+      </InputGroup>
       <VStack align="stretch" spacing={4}>
         {bangInfoRows}
       </VStack>
