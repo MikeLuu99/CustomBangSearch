@@ -1,6 +1,6 @@
 # ![](./images/icons/icon_28.png) Search Shortcuts
 
-A browser extension to use custom DuckDuckGo-like bangs directly from the address bar.
+A browser extension to use custom DuckDuckGo-like bangs directly from the search bar.
 
 ## Example Searches
 
@@ -43,7 +43,7 @@ You can also import and export your list of bangs to/from a valid JSON file.
 
 If the save button is highlighted green, this means you have unsaved changes and they will not take effect until you press the save button.
 
-### Options
+### Settings
 
 An options *tab* exists within the options *page*, which allows you to change the behaviour of the extension.
 
@@ -69,14 +69,6 @@ npm run build-firefox # OR build-firefox-release OR build-chrome OR build-chrome
 This produces a `build` directory containing the compiled JavaScript, and if building the release version, 2 zip files in the root of the project that can be uploaded to the browser web extension stores.
 
 Non "release" builds (i.e. dev builds) are not minified, can contain debugging calls such as `console.log`, and also contain some development tools loaded into the popup &| options windows.
-
-### Details
-
-A custom script, `bob.mjs`, is used to build and package the extension. This was created just to speed up the build process and make testing much easier.
-
-esbuild is used to compile the TypeScript to JavaScript, the tsc compiler is listed as a dependency but this is just used for type checking / linting.
-
-The manifest files link to the compiled build made by esbuild, not the TS files, so make sure they are built before you build the extension package.
 
 ## Credits
 
