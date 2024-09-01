@@ -81,7 +81,7 @@ CBS uses the `webRequest.onBeforeRequest` event listener to listen for requests 
 git clone https://github.com/psidex/CustomBangSearch.git
 cd CustomBangSearch
 npm install
-npm run build-firefox OR build-firefox-release OR build-chrome OR build-chrome-release
+npm run build-firefox # OR build-firefox-release OR build-chrome OR build-chrome-release
 ```
 
 This produces a `build` directory containing the compiled JavaScript, and if building the release version, 2 zip files in the root of the project that can be uploaded to the browser web extension stores.
