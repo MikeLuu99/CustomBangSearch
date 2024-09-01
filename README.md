@@ -1,14 +1,4 @@
-# ![](./images/icons/icon_28.png) Custom Bang Search
-
-[![Firefox Add-On version](https://img.shields.io/amo/v/custombangsearch?colorA=35383d)](https://addons.mozilla.org/en-US/firefox/addon/custombangsearch/)
-[![Firefox Add-On rating](https://img.shields.io/amo/rating/custombangsearch?colorA=35383d)](https://addons.mozilla.org/en-US/firefox/addon/custombangsearch/)
-[![Firefox Add-On user count](https://img.shields.io/amo/users/custombangsearch?colorA=35383d)](https://addons.mozilla.org/en-US/firefox/addon/custombangsearch/)
-[![Chrome extension version](https://img.shields.io/chrome-web-store/v/oobpkmpnffeacpnfbbepbdlhbfdejhpg?colorA=35383d)](https://chrome.google.com/webstore/detail/custom-bang-search/oobpkmpnffeacpnfbbepbdlhbfdejhpg?hl=en)
-[![Chrome extension rating](https://img.shields.io/chrome-web-store/rating/oobpkmpnffeacpnfbbepbdlhbfdejhpg?colorA=35383d)](https://chrome.google.com/webstore/detail/custom-bang-search/oobpkmpnffeacpnfbbepbdlhbfdejhpg?hl=en)
-[![Chrome extension user count](https://img.shields.io/chrome-web-store/users/oobpkmpnffeacpnfbbepbdlhbfdejhpg?colorA=35383d)](https://chrome.google.com/webstore/detail/custom-bang-search/oobpkmpnffeacpnfbbepbdlhbfdejhpg?hl=en)
-
-[![Firefox Add-On link](./images/firefox.png)](https://addons.mozilla.org/en-US/firefox/addon/custombangsearch/)
-[![Chrome Web Store link](./images/chrome.png)](https://chrome.google.com/webstore/detail/custom-bang-search/oobpkmpnffeacpnfbbepbdlhbfdejhpg?hl=en)
+# ![](./images/icons/icon_28.png) Search Shortcuts
 
 A browser extension to use custom DuckDuckGo-like bangs directly from the address bar.
 
@@ -25,15 +15,7 @@ A browser extension to use custom DuckDuckGo-like bangs directly from the addres
 
 [![Demo video](https://img.youtube.com/vi/IXP7RVFMJk4/0.jpg)](https://www.youtube.com/watch?v=IXP7RVFMJk4)
 
-## Search Engines
-
-[These search engines are tested and officially supported](./docs/supported-engines.md).
-
-If you set one of these as your browsers search engine, you can use the bangs directly in the search bar.
-
-Bangs will also work by just using the search engines normally.
-
-## Options Page
+## Settings Page
 
 The bang editing menu and general options are accessed using the extensions options page:
 
